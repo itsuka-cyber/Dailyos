@@ -20,7 +20,7 @@
   --accent-2: #2563eb;
   --danger: #ef4444;
   --warning: #ca8a04;
-  --shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+  --shadow: 0 12px 30px rgba(15,23,42,0.13);
 }
 
 *,
@@ -47,14 +47,13 @@ body {
   background: linear-gradient(145deg, var(--bg-alt), var(--bg));
   border-radius: 18px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  border: 1px solid rgba(148,163,184,0.18);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   margin-top: 32px;
 }
 
-/* Admin panel */
 .admin-terminal {
   max-width: 420px;
   margin: 38px auto 18px;
@@ -64,38 +63,38 @@ body {
 .terminal-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
   padding: 10px 16px;
   background: linear-gradient(to right, #020617, #020617d9);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  border-bottom: 1px solid rgba(148,163,184,0.35);
+  flex-wrap: wrap;
 }
-
 .dots {
   display: flex;
   gap: 7px;
 }
-
 .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   margin-top: 2px;
 }
-
 .dot.red { background: var(--danger); }
 .dot.yellow { background: var(--warning); }
 .dot.green { background: var(--accent); }
 
 .title {
   flex: 1;
+  min-width: 97px;
   font-size: 13px;
   color: var(--muted);
   font-weight: 500;
   font-family: inherit;
+  margin-right: 6px;
 }
 
 #themeToggle {
-  border: 1px solid rgba(148, 163, 184, 0.37);
+  border: 1px solid rgba(148,163,184,0.37);
   border-radius: 999px;
   background: transparent;
   color: var(--muted);
@@ -104,6 +103,7 @@ body {
   padding: 5px 12px;
   cursor: pointer;
   transition: all 0.18s ease;
+  margin-left: auto;
 }
 
 #themeToggle:hover {
@@ -111,11 +111,81 @@ body {
   color: var(--accent-2);
 }
 
-.terminal-body {
-  padding: 22px 23px 16px;
-  overflow-y: auto;
-  max-height: min(640px, 85vh);
-  font-size: 15px;
+/* --- TOOLBAR --- */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  max-width: 100vw;
+  padding-bottom: 2px;
+}
+.toolbar-link {
+  font-size: 13px;
+  color: var(--accent-2);
+  background: rgba(25,52,68,0.44);
+  border-radius: 999px;
+  padding: 4px 13px;
+  text-decoration: none;
+  border: 1px dashed rgba(90,247,142,0.21);
+  font-family: var(--font-main);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: background 0.22s, border-color 0.21s;
+  white-space: nowrap;
+  margin-bottom: 3px;
+  box-shadow: 0 1px 6px rgba(56,190,247,0.09);
+}
+.toolbar-link:hover {
+  background: var(--accent-2);
+  color: var(--bg);
+  border-color: var(--accent-2);
+}
+
+/* --- WELCOME & SEARCH SECTION --- */
+.welcome-section {
+  padding: 15px 0 13px;
+  text-align: center;
+  border-bottom: 1px solid rgba(90,247,142,0.13);
+  margin-bottom: 11px;
+}
+.welcome-section h1 {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.welcome-section p {
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+#searchForm {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+#searchInput {
+  width: 88%;
+  max-width: 365px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent-2);
+  font-family: var(--font-main);
+  font-size: 14.5px;
+  background: rgba(27,38,52,0.7);
+  color: var(--text);
+  margin: 0 auto;
+  transition: border-color 0.18s;
+}
+#searchInput:focus {
+  border-color: var(--accent);
+  outline: none;
 }
 
 .comment {
@@ -126,35 +196,33 @@ body {
   font-style: italic;
 }
 
+/* ------- ENTRY ------- */
 .entry {
   background: linear-gradient(to bottom right, rgba(56,190,247,0.08), rgba(90,247,130,0.07));
   box-shadow: 0 2px 28px 0 rgba(34,197,94,0.05);
   border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.30);
+  border: 1px solid rgba(148,163,184,0.30);
   backdrop-filter: blur(6px);
   margin-bottom: 16px;
   padding: 17px 16px;
   position: relative;
 }
-
 .entry .meta {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 6px;
 }
-
 .tag {
   font-size: 12px;
   padding: 2px 9px;
   border-radius: 999px;
-  background: rgba(18, 28, 54, 0.69);
+  background: rgba(18,28,54,0.69);
   color: var(--accent-2);
   font-weight: 500;
   margin-right: 2px;
   margin-bottom: 2px;
 }
-
 .entry h1,
 .entry h2 {
   margin: 0 0 8px 0;
@@ -163,31 +231,69 @@ body {
   font-weight: 700;
   letter-spacing: 0.03em;
 }
-
 .entry p {
   margin: 0;
   font-size: 14px;
   line-height: 1.78;
   color: var(--text);
 }
-
-/* Media preview in entry */
 .entry img, .entry video {
   display: block;
   margin: 0.7em 0 0.4em;
   border-radius: 8px;
   background: #181e2a;
-  box-shadow: 0 2px 10px rgba(23, 197, 187, 0.11);
+  box-shadow: 0 2px 10px rgba(23,197,187,0.11);
   max-width: 130px;
   max-height: 130px;
 }
-
 .entry video {
   max-width: 190px;
   max-height: 160px;
 }
 
-/* Admin Form Styling */
+/* PROFILE PHOTO + RGB ANIMATION (About.html) */
+.profile-photo-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 170px;
+  height: 170px;
+  margin: 22px auto 20px;
+}
+.profile-photo {
+  width: 142px;
+  height: 142px;
+  border-radius: 50%;
+  box-shadow: 0 2px 20px rgba(34,197,94,0.15), 0 0 0 5px #181e2a;
+  object-fit: cover;
+  z-index: 1;
+}
+.profile-photo-wrap::before {
+  content: '';
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  z-index: 0;
+  background: conic-gradient(
+    #ff0000 0deg,
+    #ff9900 60deg,
+    #ffff00 120deg,
+    #00ff00 180deg,
+    #00ffff 240deg,
+    #0000ff 300deg,
+    #ff00ff 360deg
+  );
+  filter: blur(7px) brightness(1.65);
+  animation: rgb-rotate 3s linear infinite;
+}
+@keyframes rgb-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Admin Form Styling --- */
 #noteForm label {
   display: block;
   margin: 13px 0 7px;
@@ -196,11 +302,9 @@ body {
   letter-spacing: 0.04em;
   font-weight: 600;
 }
-
 #noteForm input[type="date"] {
   font-size:15px;
 }
-
 #noteForm input,
 #noteForm textarea,
 #noteForm button {
@@ -210,19 +314,17 @@ body {
   font-size: 15px;
   margin-bottom: 14px;
   padding: 10px 12px;
-  background: rgba(23, 26, 34, 0.89);
+  background: rgba(23,26,34,0.89);
   color: var(--text);
   border: 1.5px solid var(--accent-2);
   transition: border-color 0.17s;
   box-sizing: border-box;
 }
-
 #noteForm input:focus,
 #noteForm textarea:focus {
   border-color: var(--accent);
   outline: none;
 }
-
 #noteForm button {
   padding: 11px 0;
   font-size: 16px;
@@ -236,12 +338,10 @@ body {
   box-shadow: 0 3px 20px rgba(90,247,142,0.11);
   letter-spacing: 0.08em;
 }
-
 #noteForm button:hover {
   background: var(--accent-2);
   color: var(--bg);
 }
-
 #noteForm input[type="file"] {
   background: transparent;
   color: var(--accent-2);
@@ -258,6 +358,7 @@ body {
   letter-spacing: 0.04em;
 }
 
+/* --- Admin Link --- */
 .admin-link {
   display: inline-block;
   margin-top: 8px;
@@ -272,7 +373,6 @@ body {
   transition: border-color .18s;
   font-weight: 600;
 }
-
 .admin-link:hover {
   border-style: solid;
   border-color: var(--accent-2);
@@ -282,16 +382,16 @@ body {
   padding: 13px 22px;
   font-size: 12px;
   color: var(--muted);
-  border-top: 1px solid rgba(148, 163, 184, 0.33);
+  border-top: 1px solid rgba(148,163,184,0.33);
   background: #020617ee;
 }
 
-/* Mobile Responsive */
+/* --- Mobile Responsive --- */
 @media (max-width: 560px) {
   .terminal, .admin-terminal {
-    max-width: 96vw;
-    padding: 7vw 2vw;
-    margin: 10vw auto;
+    max-width: 97vw;
+    padding: 6vw 1vw;
+    margin: 7vw auto;
     font-size: 15px;
   }
   .terminal-body {
@@ -303,12 +403,39 @@ body {
   }
   #noteForm input,
   #noteForm textarea,
-  #noteForm button {
+  #noteForm button,
+  #searchInput {
     font-size: 14px;
     padding: 7px 7px;
   }
+  .profile-photo-wrap {
+    width: 110px;
+    height: 110px;
+    margin: 16px auto 18px;
+  }
+  .profile-photo {
+    width: 84px;
+    height: 84px;
+  }
+  .profile-photo-wrap::before {
+    width: 110px;
+    height: 110px;
+  }
+  .toolbar {
+    gap: 7px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100vw;
+    padding-bottom: 3px;
+  }
+  .toolbar-link {
+    padding: 5px 10px;
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
 }
 
+/* --- Custom Scrollbar --- */
 ::-webkit-scrollbar {
   background: #181e2a;
   width: 7px;
