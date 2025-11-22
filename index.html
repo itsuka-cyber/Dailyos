@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>// daily.log</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="terminal">
+    <header class="terminal-header">
+      <div class="dots">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="title">~/life/daily-log.md</div>
+      <button id="themeToggle">theme()</button>
+    </header>
+
+    <main class="terminal-body">
+      <pre class="comment">
+/**
+ * personal daily notes
+ * author: [Riadhus Sholihin]
+ * repo : github.com/itsuka-cyber/daily-log
+ */
+      </pre>
+      <!-- Catatan akan tampil otomatis di sini -->
+      <a href="admin.html" class="admin-link">// go to admin panel →</a>
+    </main>
+    <footer class="terminal-footer">
+      <span>© <span id="year"></span> daily.log | deployed on Netlify</span>
+    </footer>
+  </div>
+  <script>
+    // Toggle tema
+    const root = document.documentElement;
+    const toggle = document.getElementById("themeToggle");
+    const yearSpan = document.getElementById("year");
+    if (yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") { root.setAttribute("data-theme", "light"); }
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        const isLight = root.getAttribute("data-theme") === "light";
+        if (isLight) { root.removeAttribute("data-theme"); localStorage.setItem("theme", "dark"); }
+        else { root.setAttribute("data-theme", "light"); localStorage.setItem("theme", "light"); }
+      });
+    }
+
+    // Menampilkan catatan harian + file
+    function loadNotes() {
+      const container = document.querySelector('.terminal-body');
+      const notes = JSON.parse(localStorage.getItem('dailyNotes') || '[]');
+      // Hapus entry lama
+      container.querySelectorAll('.entry').forEach(e => e.remove());
+      if (notes.length === 0) {
+        container.innerHTML += `<div class="entry"><p>Tidak ada catatan harian. Silakan tambah di admin.</p></div>`;
+        return;
+      }
+      notes.slice().reverse().forEach(note => {
+        let html = `
+        <section class="entry">
+          <div class="meta">
+            <span class="tag">@${note.date}</span>
+            ${note.tags.map(t => `<span class="tag">#${t}</span>`).join('')}
+          </div>
+          <h2>commit: "${note.title}"</h2>
+          <p>${note.content}</p>
+        `;
+        // Tampilkan preview file
+        if (note.files && note.files.length) {
+          note.files.forEach(file => {
+            if (file.type.startsWith('image/')) {
+              html += `<img src="${file.data}" alt="${file.name}" style="max-width:120px;max-height:120px;margin:4px 0;border-radius:8px;" />`;
+            } else if (file.type.startsWith('video/')) {
+              html += `<video controls style="max-width:190px;max-height:160px;margin:4px 0;"><source src="${file.data}" type="${file.type}"></video>`;
+            } else {
+              html += `<a href="${file.data}" download="${file.name}" style="color:var(--accent-2);margin:8px 0;display:inline-block;">${file.name}</a>`;
+            }
+          });
+        }
+        html += `</section>`;
+        container.innerHTML += html;
+      });
+    }
+    document.addEventListener('DOMContentLoaded', loadNotes);
+  </script>
+</body>
+</html>
