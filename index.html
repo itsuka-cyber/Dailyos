@@ -15,18 +15,34 @@
         <span class="dot green"></span>
       </div>
       <div class="title">~/life/daily-log.md</div>
+      <nav class="toolbar">
+        <a href="index.html" class="toolbar-link">// Home</a>
+        <a href="admin.html" class="toolbar-link">// Admin</a>
+        <a href="about.html" class="toolbar-link">// About</a>
+        <a href="privasi.html" class="toolbar-link">// Privasi</a>
+      </nav>
       <button id="themeToggle">theme()</button>
     </header>
-
     <main class="terminal-body">
+      <section class="welcome-section">
+        <h1>👋 Selamat Datang di <span style="color:var(--accent-2)">daily.log</span></h1>
+        <p>
+          Catatan harian, perjalanan hidup, dan dokumentasi belajar
+          dengan gaya <span style="color:var(--accent)">terminal coding</span> masa kini.<br>
+          Cari perjalanan, inspirasi, atau langsung mulai nulis di menu <b>Admin</b>.
+        </p>
+      </section>
+      <form id="searchForm">
+        <input type="search" id="searchInput" placeholder="Cari catatan..." autocomplete="off" />
+      </form>
       <pre class="comment">
 /**
  * personal daily notes
- * author: [Riadhus Sholihin]
+ * author: Riadhus Sholihin
  * repo : github.com/itsuka-cyber/daily-log
  */
       </pre>
-      <!-- Catatan akan tampil otomatis di sini -->
+      <!-- Catatan akan muncul otomatis di sini -->
       <a href="admin.html" class="admin-link">// go to admin panel →</a>
     </main>
     <footer class="terminal-footer">
@@ -34,7 +50,7 @@
     </footer>
   </div>
   <script>
-    // Toggle tema
+    // Toggle tema dark/light
     const root = document.documentElement;
     const toggle = document.getElementById("themeToggle");
     const yearSpan = document.getElementById("year");
@@ -50,16 +66,23 @@
     }
 
     // Menampilkan catatan harian + file
-    function loadNotes() {
+    function loadNotes(q = "") {
       const container = document.querySelector('.terminal-body');
       const notes = JSON.parse(localStorage.getItem('dailyNotes') || '[]');
-      // Hapus entry lama
       container.querySelectorAll('.entry').forEach(e => e.remove());
-      if (notes.length === 0) {
-        container.innerHTML += `<div class="entry"><p>Tidak ada catatan harian. Silakan tambah di admin.</p></div>`;
+      let filtered = notes;
+      if (q && q.trim().length > 0) {
+        filtered = notes.filter(note =>
+          note.title.toLowerCase().includes(q) ||
+          note.content.toLowerCase().includes(q) ||
+          note.tags.some(t => t.toLowerCase().includes(q))
+        );
+      }
+      if (filtered.length === 0) {
+        container.innerHTML += `<div class="entry"><p>Tidak ada catatan harian${q ? ' untuk pencarian tersebut' : ''}. Silakan tambah di admin.</p></div>`;
         return;
       }
-      notes.slice().reverse().forEach(note => {
+      filtered.slice().reverse().forEach(note => {
         let html = `
         <section class="entry">
           <div class="meta">
@@ -69,15 +92,14 @@
           <h2>commit: "${note.title}"</h2>
           <p>${note.content}</p>
         `;
-        // Tampilkan preview file
         if (note.files && note.files.length) {
           note.files.forEach(file => {
             if (file.type.startsWith('image/')) {
-              html += `<img src="${file.data}" alt="${file.name}" style="max-width:120px;max-height:120px;margin:4px 0;border-radius:8px;" />`;
+              html += `<img src="${file.data}" alt="${file.name}" />`;
             } else if (file.type.startsWith('video/')) {
-              html += `<video controls style="max-width:190px;max-height:160px;margin:4px 0;"><source src="${file.data}" type="${file.type}"></video>`;
+              html += `<video controls><source src="${file.data}" type="${file.type}"></video>`;
             } else {
-              html += `<a href="${file.data}" download="${file.name}" style="color:var(--accent-2);margin:8px 0;display:inline-block;">${file.name}</a>`;
+              html += `<a href="${file.data}" download="${file.name}" style="color:var(--accent-2);">${file.name}</a>`;
             }
           });
         }
@@ -85,7 +107,14 @@
         container.innerHTML += html;
       });
     }
-    document.addEventListener('DOMContentLoaded', loadNotes);
+    document.addEventListener('DOMContentLoaded', () => loadNotes());
+
+    // Search fitur
+    document.getElementById('searchForm').onsubmit = function(e) {
+      e.preventDefault();
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      loadNotes(q);
+    };
   </script>
 </body>
 </html>
